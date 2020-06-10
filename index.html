@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8" />
+  <!--meta name="viewport" content="width=device-width, initial-scale=2" />
+  <head>
+    <title>EnigmaLab Portfolio</title>
+    <!-- CSS Files-->
+    <link rel="stylesheet" href="style.css" />
+    <!--Google Fonts-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100&display=swap"
+      rel="stylesheet"
+    />
+    <!--Font awesome-->
+    <link
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    
+     <div class="main">
+        <img 
+            height="200"
+            width = "200"
+            id ="profileImage"
+        >
+        <h2 id="fullName"> </h2>
+        <p id="bio"> </p>
+        <h5 id="followersInfo"></h5>
+        <p>
+            Check me on <a id="githublink">Github</a>
+        </p>
+        
+     
+    </div>
+    <div class="git">
+      <h3><b>EnigmaLab Repository</b>s</h3>
+    </div>
+    <!--Javascript Files-->
+    <script>fetch("https://api.github.com/users/enigmalab").then((response) =>
+  response.json().then(function (data) {
+     console.log(data);
+                 let followersCount = data['followers']
+                 let followersInfo = `${followersCount} awesome people follow me on Github`
+                 document.getElementById('profileImage').src = data['avatar_url']
+                 document.getElementById('fullName').textContent = data['name']
+                 document.getElementById('bio'),textContent = data['bio']
+                 document.getElementById('followersInfo').textContent= followersInfo
+                 document.getElementById('githublink').href = data['html_url']
+  })
+);
+
+fetch("https://api.github.com/users/enigmalab/repos")
+  .then((response) => response.json())
+  .then(function (data) {
+    data.splice(7);
+
+    data.forEach((d) => {
+      const { url, full_name, name,description } = d;
+      let git = document.querySelector(".git");
+      let html = `
+              <div class="git1">
+                <p>${full_name}</p>
+                <p>${description}</p>
+
+                <a href="${url}" class="git__url">${name}</a>
+                
+              </div>
+            `;
+      git.innerHTML += html;
+    });
+  });</script>
+  </body>
+</html>
